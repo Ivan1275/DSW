@@ -1,0 +1,1 @@
+<p>Esta es mi primera vista en Laravel</p>
