@@ -29,9 +29,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // Act A32 y A34
-Route::middleware('auth')->group(function () {
-    Route::get('community', [App\Http\Controllers\CommunityLinkController::class, 'index']);
-    Route::post('community', [App\Http\Controllers\CommunityLinkController::class, 'store']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/community', [App\Http\Controllers\CommunityLinkController::class, 'store']);
+    Route::get('/community', [App\Http\Controllers\CommunityLinkController::class, 'index']);
 });
 
 

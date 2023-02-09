@@ -7,17 +7,19 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+        
         <!-- ICO -->
-        <link rel="icon" type="image/x-icon" href="{{asset('public/Amogus/favicon.ico')}}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Boostrap 5 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js'], ['resources/css/styles.css'])
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -34,6 +36,10 @@
 
             <!-- Page Content -->
             <main>
+            <div id="app">
+                @include('flash-message')
+            </div>
+
             @yield('content')
             </main>
         </div>

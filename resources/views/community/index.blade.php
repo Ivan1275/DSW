@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container ms-3 me-3">
     <div class="row pt-2">
         <div class="col-md-8">
             <h1>Community</h1>
+            @if (count($links) != 0)
             @foreach ($links as $link)
             <li>
                 <a href="{{$link->link}}" target="_blank">
@@ -16,8 +17,12 @@
                 </span>
             </li>
             @endforeach
+            @else
+            <h3>No tengo ningun link que mostrar. Crea uno!</h3>
+            @endif
 
         </div>
+        @auth
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
@@ -29,6 +34,7 @@
             </div>
 
         </div>
+        @endauth
     </div>
     {{$links->links()}}
 

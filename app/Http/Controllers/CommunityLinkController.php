@@ -17,7 +17,7 @@ class CommunityLinkController extends Controller
     public function index()
     {
         // Act A32
-        $links = CommunityLink::paginate(25);
+        $links = CommunityLink::where('approved', 1)->paginate(25);
         // Act 35
         $channels = Channel::orderBy('title','asc')->get();
         return view('community/index', compact('links', 'channels'));
@@ -46,9 +46,18 @@ class CommunityLinkController extends Controller
             'channel_id' => 'required|exists:channels,id'
         ]);
 
-        request()->merge(['user_id' => Auth::id(), 'channel_id' => 1 ]);
+        $approved = /*true*/Auth::user()->trusted ? true : false;
+        request()->merge(['user_id' => Auth::id(), 'approved'=>$approved]);
         CommunityLink::create($request->all());
-        return back();
+
+        if($approved == true){
+            return back()->with('success','El link se creo correctamente'); //En el caso de que la cuenta este verificada
+        } else if ($approved == false) {
+            return back()->with('warning','El link se creo correctamente, aparecera un vez la cuenta sea verificada'); //En el caso de que la cuenta NO este verificada
+        } else{
+            return back()->with('error','Algo que no debia suceder ha ocurrido'); //En el caso algo no ocurra como es debido
+        }
+        
     }      
 
     /**
