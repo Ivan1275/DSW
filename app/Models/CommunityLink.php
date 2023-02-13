@@ -17,12 +17,7 @@ class CommunityLink extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    public function channel()
-    {
-        return $this->belongsTo(Channel::class, 'channel_id');
-    }
-
+    
     public static function hasAlreadyBeenSubmitted($link){
         if ($existing = static::where('link', $link)->first()) {
             $existing->touch();
@@ -32,5 +27,9 @@ class CommunityLink extends Model
             return false;
         }
     }
-
+    
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class, 'channel_id');
+    }
 }

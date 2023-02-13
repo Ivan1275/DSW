@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommunityLinkForm;
 use App\Models\Channel;
 use App\Models\CommunityLink;
 use Illuminate\Http\Request;
@@ -16,10 +17,11 @@ class CommunityLinkController extends Controller
      */
     public function index()
     {
-        // Act A32
-        $links = CommunityLink::where('approved', 1)->paginate(25);
-        // Act 35
+        
+        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
+        
         $channels = Channel::orderBy('title','asc')->get();
+
         return view('community/index', compact('links', 'channels'));
     }
 
@@ -39,20 +41,24 @@ class CommunityLinkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        $this->validate($request, [
-            'title' => 'required',
-            'link' => 'required|active_url|unique:community_links',
-            'channel_id' => 'required|exists:channels,id'
-        ]);
-
-        $approved = /*true*/Auth::user()->trusted ? true : false;
+    public function store(CommunityLinkForm $request) {
+        
+        $approved = true/*Auth::user()->trusted ? true : false*/;
         request()->merge(['user_id' => Auth::id(), 'approved'=>$approved]);
-        CommunityLink::create($request->all());
 
+        // dump($request);
+        // die();
+        
         if($approved == true){
-            return back()->with('success','El link se creo correctamente'); //En el caso de que la cuenta este verificada
+            if (CommunityLink::hasAlreadyBeenSubmitted($request['link']) == true) {
+                CommunityLink::hasAlreadyBeenSubmitted($request['link']);
+                return back()->with('success', 'El link se actualizado correctamente');
+            } else {
+                CommunityLink::create($request->all());
+                return back()->with('success', 'El link se creo correctamente');
+            }
         } else if ($approved == false) {
+            CommunityLink::create($request->all());
             return back()->with('warning','El link se creo correctamente, aparecera un vez la cuenta sea verificada'); //En el caso de que la cuenta NO este verificada
         } else{
             return back()->with('error','Algo que no debia suceder ha ocurrido'); //En el caso algo no ocurra como es debido
