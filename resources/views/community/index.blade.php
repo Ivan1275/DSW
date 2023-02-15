@@ -1,15 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container ms-3 me-3">
+<div class="container">
     <div class="row pt-2">
         <div class="col-md-8">
-            <h1>Community</h1>
             @if (count($links) != 0)
+            
+            <table class="table table-bordered table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            @if ($show == 1)
+                            
+                            <h2>
+                                <a href="/community/">Community</a> - {{$links[0]->channel->title}}
+                            </h2>
+                            
+                            
 
-            @include('profile.partials.lista-links')
+                            @else
 
+                            <h2>Community</h2>
+                            
+                            @endif
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @include('partials.lista-links')
+                </tbody>
+            </table>
+            
             @else
+            
+            <h2>Community</h2>
             
             <h3>No tengo ningun link que mostrar. Crea uno!</h3>
             
@@ -23,7 +47,7 @@
                     <h3>Contribute a link</h3>
                 </div>
                 <div class="card-body">
-                    @include('profile.partials.add-link')
+                    @include('partials.add-link')
                 </div>
             </div>
 

@@ -34,7 +34,7 @@
         @enderror
     </div>
 
-    <div class="form-group card-footer">
+    <div class="form-group pt-3">
         <button class="btn btn-primary">Contribute Link</button>
     </div>
 </form>

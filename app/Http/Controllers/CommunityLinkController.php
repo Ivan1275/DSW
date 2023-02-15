@@ -7,6 +7,7 @@ use App\Models\Channel;
 use App\Models\CommunityLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommunityLinkController extends Controller
 {
@@ -15,14 +16,18 @@ class CommunityLinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Channel $channel = null)
     {
-        
-        $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
-        
-        $channels = Channel::orderBy('title','asc')->get();
-
-        return view('community/index', compact('links', 'channels'));
+        $channels = Channel::orderBy('title', 'asc')->get();
+        if ($channel) {
+            $links = $channel->LinksByChannel()->where('approved', true)->latest('community_links.updated_at')->paginate(25);
+            $show = 1;
+            return view('community/index', compact('links', 'channels', 'show'));
+        } else {
+            $links = CommunityLink::where('approved', true)->latest('updated_at')->paginate(25);
+            $show = 0;
+            return view('community/index', compact('links', 'channels', 'show'));
+        }
     }
 
     /**
@@ -44,16 +49,21 @@ class CommunityLinkController extends Controller
     public function store(CommunityLinkForm $request) {
         
         $approved = true/*Auth::user()->trusted ? true : false*/;
-        request()->merge(['user_id' => Auth::id(), 'approved'=>$approved]);
+        $request->merge(['user_id' => Auth::id(), 'approved'=>$approved]);
 
         // dump($request);
         // die();
         
         if($approved == true){
-            if (CommunityLink::hasAlreadyBeenSubmitted($request['link']) == true) {
-                CommunityLink::hasAlreadyBeenSubmitted($request['link']);
+            
+            $link = new CommunityLink();
+            $link->user_id = Auth::id();
+            $LinkYaSubido = $link->hasAlreadyBeenSubmitted($request->link);    
+            
+            if ($LinkYaSubido == true) {
                 return back()->with('success', 'El link se actualizado correctamente');
             } else {
+                // dd($request->all());
                 CommunityLink::create($request->all());
                 return back()->with('success', 'El link se creo correctamente');
             }

@@ -28,10 +28,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Act A32 y A34
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/community', [App\Http\Controllers\CommunityLinkController::class, 'store']);
     Route::get('/community', [App\Http\Controllers\CommunityLinkController::class, 'index']);
+    Route::get('/community/{channel}', [App\Http\Controllers\CommunityLinkController::class, 'index']);
 });
 
 
