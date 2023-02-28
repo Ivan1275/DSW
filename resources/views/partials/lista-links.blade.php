@@ -15,6 +15,8 @@
         <small>
             Contributed by: <a href="/profile/{{ $link->creator->name }}"> {{$link->creator->name}} </a> {{$link->updated_at->diffForHumans()}}
         </small>
+
+        {{$link->users()->count()}}
     </td>
 </tr>
 @endforeach
