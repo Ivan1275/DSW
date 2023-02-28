@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,10 +13,33 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    
+    /*
+    public function index(User $user = null)
+    {
+        $users = User::get();
+        if ($user) {
+            $profile = $user->profile();
+            dump($profile);
+            return view('profile/index', compact('profile', 'users'));
+        } else {
+            $profile = User::get();
+            dump($profile);
+            return view('profile/index', compact('profile', 'users'));
+        }
+    }
+    */
+    
+    /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
+        // dump($request->user()->profile());
         return view('profile.edit', [
             'user' => $request->user(),
         ]);

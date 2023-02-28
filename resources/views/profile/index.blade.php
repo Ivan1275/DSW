@@ -4,7 +4,9 @@
 <div class="container">
     <div class="row pt-2">
         <div class="col-md-8">
-            @if (count($links) != 0)
+            @if (count($profile) != 0)
+            
+            <h2>{{$profile->name}}</h2>
             
             <table class="table table-bordered table-hover table-sm">
                 <thead>
@@ -33,7 +35,7 @@
             
             <h2>Community</h2>
             
-            <h3>No tengo ningun link que mostrar. Crea uno!</h3>
+            <h3>No existe un profile</h3>
             
             @endif
 

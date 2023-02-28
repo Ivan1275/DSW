@@ -12,7 +12,9 @@
             {{$link->title}}
         </a>
     
-        <small>Contributed by: {{$link->creator->name}} {{$link->updated_at->diffForHumans()}}</small>
+        <small>
+            Contributed by: <a href="/profile/{{ $link->creator->name }}"> {{$link->creator->name}} </a> {{$link->updated_at->diffForHumans()}}
+        </small>
     </td>
 </tr>
 @endforeach

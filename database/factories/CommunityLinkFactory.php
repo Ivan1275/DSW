@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Channel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 
@@ -19,7 +20,7 @@ class CommunityLinkFactory extends Factory
     {
         return [
             'user_id' => User::all()->random()->id,
-            'channel_id' => 1,
+            'channel_id' => Channel::all()->random()->id,
             'title' => $this->faker->sentence,
             'link' => $this->faker->url,
             'approved' => 0
